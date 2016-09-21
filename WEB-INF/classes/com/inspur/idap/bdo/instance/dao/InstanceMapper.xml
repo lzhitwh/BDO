@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inspur.idap.bdo.instance.dao.InstanceMapper">
+    <resultMap type="com.inspur.idap.bdo.instance.data.Instance" id="InstanceResultMap">
+        <id property="jobId" column="id" />
+        <result property="jobName" column="app_name"/>
+        <result property="jobStatus" column="status"/>
+        <result property="jobRun" column="run"/> 
+        <result property="jobUser" column="user_name"/>
+        <result property="jobCreated" column="last_modified_time"/>
+        <result property="jobStarted" column="start_time"/>  
+    </resultMap>   
+	<select id="findAll" resultMap="InstanceResultMap" parameterType="map">
+        SELECT 
+            ID,
+            APP_NAME,
+            STATUS,
+            RUN,
+            USER_NAME,
+            LAST_MODIFIED_TIME,
+            START_TIME
+        FROM WF_JOBS
+        <where>
+			<if test="jobId != null">
+			 	ID='${jobId}'
+			</if>
+			<if test="jobName != null and jobName!= '' ">
+			 	and APP_NAME like '%${jobName}%'
+			</if>
+		</where>
+       	ORDER BY 
+		<if test="orderfield != null" >
+        	<choose>
+                <when test="orderfield == 'jobId'">    
+                    ID ${orderdir} 
+                </when>  
+                 <when test="orderfield == 'jobName'">    
+                    APP_NAME ${orderdir} 
+                </when>  
+                 <when test="orderfield == 'jobStatus'">    
+                    STATUS ${orderdir} 
+                </when>  
+                 <when test="orderfield == 'jobRun'">    
+                    RUN ${orderdir} 
+                </when>  
+                 <when test="orderfield == 'jobUser'">    
+                    USER_NAME ${orderdir} 
+                </when>  
+                <when test="orderfield == 'jobStarted'">    
+                    START_TIME ${orderdir}
+                </when>
+                <when test="orderfield == 'jobCreated'">    
+                    LAST_MODIFIED_TIME ${orderdir}   
+                </when>
+                <otherwise> 
+               		LAST_MODIFIED_TIME desc   
+                </otherwise>    
+            </choose>    
+        </if>
+        <if test="orderfield == null" >
+        	LAST_MODIFIED_TIME desc
+        </if>
+    </select>
+    
+    <delete id="deleteById" parameterType="java.lang.String">
+		DELETE FROM WF_JOBS WHERE
+		id=#{id}
+    </delete>
+</mapper>

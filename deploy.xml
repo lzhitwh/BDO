@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="发布common项目" default="main" basedir=".">
+
+	<!-- 初始化属性						                        			-->
+    <!-- ================================================================== -->
+    <target name="init-properties" description="初始化属性">
+        <property file="deploy.properties"/>
+    	<property name="deploy.dir" value="${deploy.dir}" />
+    </target>
+	
+    <target name="copy" depends="init-properties" description="拷贝文件">
+    	<!--拷贝sql-->
+    	<copy todir="${deploy.dir}/sql/">
+            <fileset dir="sql" includes="**"/>
+        </copy>
+    	<!--拷贝jsp-->
+    	<copy todir="${deploy.dir}/jsp/">
+            <fileset dir="jsp" includes="**"/>
+        </copy>
+    	<!--拷贝skins-->
+	    <copy todir="${deploy.dir}/skins/">
+	         <fileset dir="skins" includes="**"/>
+	    </copy>
+        <!--拷贝WEB-INF-->
+        <copy todir="${deploy.dir}/WEB-INF">
+            <fileset dir="WEB-INF"/>
+        </copy>
+  	</target>
+  	
+	<target name="jar" description="源码打包">
+        <jar destfile="./idap-bdo.jar">
+            <fileset dir="./WEB-INF/classes">
+                <include name="**/*.class" />
+                <include name="**/*.xml" />
+            </fileset>
+        </jar>
+    </target>
+	<target name="main" description="==>发布程序,拷贝">
+		<antcall target="copy" />
+		<antcall target="jar" />
+	</target>
+</project>

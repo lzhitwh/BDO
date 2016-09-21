@@ -1,0 +1,77 @@
+10
+
+dir
+5364
+svn://10.110.1.24/svn/idap/BDO/trunk/jsp/bdo/procdef/infoprocessmodel/html/property
+svn://10.110.1.24/svn/idap
+
+
+
+2016-08-31T01:13:46.581059Z
+5230
+liuzhen
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+474e66ea-988a-11e5-a635-65d28ba615a6
+
+condition
+dir
+
+gateway
+dir
+
+process
+dir
+
+subproc
+dir
+
+task
+dir
+
+wfproperty.js
+file
+
+
+
+
+2016-09-13T02:07:06.863000Z
+aebdca350ec7dc2150a12e52b501f2d8
+2016-08-31T01:13:46.581059Z
+5230
+liuzhen
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7331
+

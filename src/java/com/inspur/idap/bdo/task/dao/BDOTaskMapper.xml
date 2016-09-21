@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inspur.idap.bdo.task.dao.BDOTaskMapper">
+    <resultMap type="com.inspur.idap.bdo.task.data.Task" id="TaskResultMap">
+    </resultMap>   
+	<select id="findAll" resultMap="TaskResultMap" parameterType="map">
+        SELECT 
+            TASK_ID,
+            TASK_NAME,
+            CREATE_TIME,
+            UPDATE_TIME,
+            QUEUE_NAME,
+            TASK_PATH,
+            CLUSTER_ID,
+            JOB_TRACKER,
+            NAME_NODE,
+            OOZIE_URL,
+            CLIENT_NAME,
+			TASK_TYPE,
+			TASK_COORDPATH,
+			START_TIME,
+			END_TIME
+        FROM WF_TASK
+        <where>
+			<if test="taskId != null">
+			 	TASK_ID='${taskId}'
+			</if>
+			<if test="taskName != null and taskName!= '' ">
+			 	AND TASK_NAME LIKE '%${taskName}%'
+			</if>
+		</where>
+        ORDER BY 
+		<if test="orderfield != null" >
+        	<choose>    
+                <when test="orderfield == 'taskId'">    
+                    TASK_ID ${orderdir} 
+                </when>  
+                 <when test="orderfield == 'taskName'">    
+                    TASK_NAME ${orderdir} 
+                </when>  
+                <when test="orderfield == 'createTime'">    
+                    CREATE_TIME ${orderdir}   
+                </when>
+                <when test="orderfield == 'updateTime'">    
+                    UPDATE_TIME ${orderdir}   
+                </when>
+                <otherwise> 
+               		UPDATE_TIME desc   
+                </otherwise>    
+            </choose>    
+        </if>
+        <if test="orderfield == null" >
+        	UPDATE_TIME desc
+        </if>
+    </select>
+    
+    <insert id="add" parameterType="java.lang.String">
+		INSERT INTO WF_TASK (
+			TASK_ID,
+            TASK_NAME,
+            CREATE_TIME,
+            UPDATE_TIME,
+            NAME_NODE,
+            JOB_TRACKER,
+            QUEUE_NAME,
+            TASK_PATH,
+            CLUSTER_ID,
+            OOZIE_URL,
+            CLIENT_NAME,
+            TASK_TYPE,
+            TASK_COORDPATH,
+            START_TIME,
+            END_TIME
+		) VALUES (
+			#{taskId},
+			#{taskName},
+			#{createTime},
+			#{updateTime},
+			#{nameNode},
+			#{jobTracker},
+			#{queueName},
+			#{taskPath},
+			#{clusterId},
+			#{oozieUrl},
+			#{clientName},
+			#{taskStyle},
+			#{taskCoordPath},
+			#{startTime},
+			#{endTime}
+		)
+    </insert>
+    <update id="update" parameterType="com.inspur.idap.bdo.task.data.Task">
+    	UPDATE 
+			WF_TASK 
+		SET 
+			TASK_NAME=#{taskName},
+			UPDATE_TIME=#{updateTime},
+			TASK_TYPE=#{taskStyle},
+			START_TIME=#{startTime},
+			END_TIME=#{endTime}
+		WHERE 
+			TASK_ID =#{taskId}
+    </update>
+    
+    <delete id="deleteById" parameterType="java.lang.String">
+		DELETE FROM WF_TASK WHERE
+		TASK_ID=#{taskId}
+    </delete>
+</mapper>

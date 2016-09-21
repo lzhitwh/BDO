@@ -1,0 +1,124 @@
+html,body{
+	font-size: 12px;
+	text-align: center;
+	font-family:"宋体";
+}
+ul{
+	list-style: none;
+}
+ul li{
+	display: inline-block;
+}
+#bottomRight,#bottomLeft{
+	float: left;
+}
+
+.divTable table{
+	width: 100%;
+	height: 225px;
+	margin-right: auto;
+	margin-left: auto;
+	border-collapse: collapse;
+	/* background-color:#EDECEA; */
+}
+.divTable thead tr{
+	height: 30px;
+	background-color: #ebebeb;
+	border:none;
+	color:#333;
+	
+}
+.divTable tbody tr{
+	height:30px;
+	cursor: pointer;
+	background-color:#fafafa;
+	color:#666;
+	border-bottom: 1px solid #dcdcdc;
+}
+.divTable tbody tr td.name {
+	border-right: 1px solid #dcdcdc;
+	padding-right: 5px;
+}
+.divTable tbody tr td.name input {
+	text-align: right;
+}
+.divTable tbody tr td.value {
+	
+}
+.divTable tbody tr td input {
+	height: 100%;
+    width: 100%;
+    border: none;
+}
+.divTable tbody tr:hover{
+	background-color: #f0f0f0;
+}
+.divTable th,.divTable td{
+	border: none;
+	text-align: center;
+	width: 50%;
+}
+.button{
+	text-align: right;
+	float:left;
+	right: 10px;
+	position: absolute;
+	bottom: 20px
+}
+.odd{
+	background-color: #fafafa;
+}
+.selected{
+	background-color: #FFFFFF !important;
+	color:#333 !important;
+}
+input[type="button"],button{
+	font-size: 15px;
+	font-family: "宋体";
+	text-align: center;
+	height: 30px;
+	padding: 0px 15px;
+	margin: 0px 5px 0px 0px;
+	color: #fff;
+}
+#search{
+	padding:0px 10px;
+	magin:0px;
+	height:26px;
+	font-size: 12px;
+	background: #538FD8;
+	border: none;
+	position: relative;
+	top: -1.5px;
+}
+.confirm{
+	background-color: #538FD8;
+	border:none;
+}
+
+.cancel{
+	background-color: #AAAAAA;
+	border:none;
+}
+.confirm:HOVER,#search:HOVER{
+	background-color:#5596e1;
+}
+.cancel:HOVER{
+	background-color: #b4b4b4;
+}
+.searchArea{
+	width: 80%;
+	height: 30px;
+	margin: 5px;
+	padding: 20px 0px 15px 0px;
+	text-align: left;
+	left:20px;
+	position:relative;
+}
+.searchArea input[type='text']{
+	height: 24px;
+	line-height:24px;
+	margin: 0px 10px;
+	width: 168px;
+	border: solid 1px #C2C2C2;
+}

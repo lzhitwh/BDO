@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inspur.idap.bdo.cluster.dao.GetClusterMapper">
+    <resultMap type="com.inspur.idap.bdo.cluster.data.ClusterInfo" id="ClusterInfoResultMap">
+      	<id property="clusterId" column="clusterId" />
+      	<result property="clientName" column="clientName"/>
+        <result property="clusterName" column="clusterName"/>
+        <result property="jobtracker" column="jobtracker"/>
+        <result property="nameNode" column="nameNode"/>
+        <result property="oozieUrl" column="oozieUrl"/>
+    </resultMap>   
+	<select id="findAll" resultMap="ClusterInfoResultMap" parameterType="map">
+        SELECT 
+        	* 
+        FROM BDO_CLUSTERLIST
+        <where>
+            <if test="clusterId!=null">
+                clusterId = '${clusterId}'
+            </if>
+            <if test="clusterName!='' and clusterName!=null">
+                and clusterName like '%${clusterName}%'
+           	</if>
+        </where>
+        ORDER BY
+        <if test="orderfield != null" >
+        	<choose>
+                <when test="orderfield == 'clusterId'">    
+                    CLUSTERID ${orderdir}
+                </when>
+                <when test="orderfield == 'clusterName'">    
+                    CLUSTERNAME ${orderdir}
+                </when>
+                <when test="orderfield == 'clientName'">    
+                    CLIENTNAME ${orderdir}
+                </when>
+                 <when test="orderfield == 'jobtracker'">    
+                    JOBTRACKER ${orderdir}
+                </when>
+                 <when test="orderfield == 'nameNode'">    
+                    NAMENODE ${orderdir}
+                </when>
+                 <when test="orderfield == 'oozieUrl'">    
+                    OOZIEURL ${orderdir}
+                </when>
+                <otherwise> 
+               		CLUSTERID desc   
+                </otherwise>    
+            </choose>    
+        </if>
+        <if test="orderfield == null" >
+        	CLUSTERID desc
+        </if> 
+    </select>
+    
+	<select id="findAllId" resultMap="ClusterInfoResultMap" parameterType="java.lang.String">
+	    SELECT * FROM BDO_CLUSTERLIST WHERE CLUSTERID=#{clusterId}
+	</select>
+    
+    <insert id="add" parameterType="com.inspur.idap.bdo.cluster.data.ClusterInfo">
+		INSERT INTO BDO_CLUSTERLIST (
+			CLUSTERID,
+			CLIENTNAME,
+            CLUSTERNAME,
+            JOBTRACKER,
+            NAMENODE,
+           	OOZIEURL
+		) VALUES (
+			#{clusterId},
+			#{clientName},
+			#{clusterName},
+			#{jobtracker},
+			#{nameNode},
+			#{oozieUrl}
+		)
+    </insert>
+    
+    <update id="update" parameterType="com.inspur.idap.bdo.cluster.data.ClusterInfo">
+    	UPDATE 
+			BDO_CLUSTERLIST 
+		SET 
+			CLUSTERNAME=#{clusterName},
+			CLIENTNAME=#{clientName},
+			JOBTRACKER=#{jobtracker},
+			NAMENODE=#{nameNode},
+			OOZIEURL=#{oozieUrl}
+		WHERE 
+			CLUSTERID =#{clusterId}
+    </update>
+    
+    <delete id="deleteById" parameterType="java.lang.String">
+		DELETE FROM BDO_CLUSTERLIST WHERE
+		CLUSTERID=#{clusterId}
+    </delete>
+</mapper>

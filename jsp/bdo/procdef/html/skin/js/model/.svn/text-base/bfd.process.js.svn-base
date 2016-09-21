@@ -1,0 +1,112 @@
+(function($){
+	var overrideDef = {
+		id : "",
+		name : "",
+		formId : "",
+		formName : "",
+		processSubject : "",
+		refSubjectField : "",
+		refSubjectJoin : "",
+		
+		nodes: null,
+		activities : null,
+ 		subjects : null,
+ 		procSubjectDefs : null,
+ 		procSubjectQueryDefs : null,
+ 		actions : null,//待办
+ 		yiBanActions : null,
+ 		endActions : null,
+ 		isSet:false,
+ 		isSetLocal:false,
+ 		isSetLocalD:false,
+		isSetLocalY:false,
+		isSetLocalE:false,
+		isSetProcSubject:false,
+		
+ 		init:function(){
+// 			this.activities = new CFActivities();
+// 			this.activities.init();
+ 			this.nodes = new BDONodes();
+ 			this.nodes.init();
+ 		},
+ 		generateXml : function() {
+ 			var root = CFlow.xmlDoc.createElement("workflow-app");
+			root.setAttribute("xmlns" , "uri:oozie:workflow:0.2");
+			this.nodes.generateXml(root);
+			return root;
+ 		},
+		generateStartNode : function() {
+			var startNode = CFlow.xmlDoc.createElement("start");
+			startNode.setAttribute("name" , "");
+			
+			return startNode;
+		},
+		generateNodes : function() {
+			var startNode = CFlow.xmlDoc.createElement("start");
+			startNode.setAttribute("name" , "");
+			
+			return startNode;
+		},
+		generateEndNode : function() {
+			var endNode = CFlow.xmlDoc.createElement("end");
+			endNode.setAttribute("name" , "end");
+			
+			return endNode;
+		},
+		
+		parseXml : function(element) {
+			this.id = element.getAttribute("id");
+			this.name = element.getAttribute("name");
+			this.formId = element.getAttribute("formId");
+			this.formName = element.getAttribute("formName");
+			this.processSubject = element.getAttribute("processSubject");
+			this.refSubjectField = element.getAttribute("refSubjectField");
+			this.refSubjectJoin = element.getAttribute("refSubjectJoin");
+			
+			for (var i = 0; i < element.childNodes.length; i++) {
+				var child = element.childNodes[i];
+				if(child.nodeName === "Activities") {
+					this.activities.parseXml(child);
+	         	} else if(child.nodeName === "Subjects") {
+	         		this.subjects=new CFSubjects();
+	         		this.subjects.init();
+	         		this.subjects.parseXml(child);
+	         	} else if(child.nodeName === "ProcSubjectDefs") {
+	         		this.procSubjectDefs=new CFProcSubjectDefs();
+	         		this.procSubjectDefs.init();
+	         		this.procSubjectDefs.parseXml(child);
+	         	} else if(child.nodeName === "ProcSubjectQueryDefs") {
+	         		this.procSubjectQueryDefs=new CFProcSubjectQueryDefs();
+	         		this.procSubjectQueryDefs.init();
+	         		this.procSubjectQueryDefs.parseXml(child);
+	         	} else if(child.nodeName === "Actions") {
+	         		this.actions=new CFActions();
+	         		this.actions.init();
+	         		this.actions.parseXml(child);
+	         	} else if(child.nodeName === "YiBanActions") {
+	         		this.yiBanActions=new CFYiBanActions();
+	         		this.yiBanActions.init();
+	         		this.yiBanActions.parseXml(child);
+	         	} else if(child.nodeName === "EndActions") {
+	         		this.endActions=new CFEndActions();
+	         		this.endActions.init();
+	         		this.endActions.parseXml(child);
+	         	}
+			}
+
+			if(this.formId){
+				this.isSet=true;
+			}
+			if(this.refSubjectField){
+				CFProcess.isSetDefault=true;
+			}
+			this.isSetProcSubject=true;
+			if((this.actions && this.actions.childList[0]) || 
+					(this.yiBanActions && this.yiBanActions.childList[0])|| 
+					(this.endActions && this.endActions.childList[0])){
+				this.isSetLocal=true;
+			}
+		}
+	};
+	BFProcess = $.inherit(CFBase, overrideDef);
+})(jQuery);
